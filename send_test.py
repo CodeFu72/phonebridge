@@ -68,7 +68,8 @@ def wait_transfer(bus, path, initial, events=None, pump=None):
     while True:
         if pump:
             pump()
-        if events:
+        if events and status not in ('complete', 'error'):
+            # Never let an older signal undo a finished status we already polled.
             status = events.statuses.get(str(path), status)
         if status == 'complete':
             return True

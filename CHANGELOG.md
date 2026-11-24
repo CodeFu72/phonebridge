@@ -1,6 +1,19 @@
 # Changelog
 
 
+## 0.1.0-alpha.2 — fixes from a read-only code review (2026-11-24)
+
+Found by a read-only review (Gemini 4 Neon High), each checked against the code before fixing:
+- Install: `python-cairo` was missing from the install steps, so some new machines crashed on first launch. It is now listed, and the installer checks for it with a clear message.
+- Demo mode no longer crashes when Notifications or Sound is switched.
+- Guided setup lists every paired phone (marking the ones already messaging-ready), so a new iPhone that hasn't turned on message access yet still shows up.
+- A message with an unknown character-set label falls back to UTF-8 instead of stopping the Bluetooth connection.
+- A send that never started (for example, Bluetooth dropped first) now says "Not sent", keeps your draft and doesn't lock the composer.
+- A finished send can no longer be relabeled "uncertain" by an older status signal.
+- The background sky timer runs only while the animated sky is actually showing. Idle wakeups went from about 80 to 4 every 5 seconds (better for laptop fans).
+- Wording: the Settings button is named correctly in the hint, and old assistant names are gone from terminal prompts.
+- Three new tests (90 total).
+
 ## Unreleased — public alpha prep (2026-11-23)
 
 - README: "Tested on" section, demo screenshot (fictional data), credit to Kirk Fuson (EchoLine); text limit corrected to 2,000 bytes with Shift+Enter line breaks.

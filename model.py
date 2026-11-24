@@ -148,7 +148,8 @@ class SendGate:
     def finish(self, result):
         if self.state != 'pending':
             raise ValueError('No send is pending.')
-        self.state = 'idle' if result == 'accepted' else 'uncertain'
+        # 'not_sent' means nothing reached the phone, so there is nothing to check.
+        self.state = 'idle' if result in ('accepted', 'not_sent') else 'uncertain'
 
     def acknowledge(self):
         if self.state != 'uncertain':

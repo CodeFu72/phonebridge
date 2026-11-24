@@ -48,7 +48,7 @@ def main():
         tracker = FreshMessages(baseline)
         print('\nReady. Ask someone to send you a NEW text now.', flush=True)
         print('Existing messages are ignored. New texts display only in this terminal, with no disk history.', flush=True)
-        print(f'Waiting up to {args.seconds} seconds; Ctrl+C stops. Do not paste private text into Codex.', flush=True)
+        print(f'Waiting up to {args.seconds} seconds; Ctrl+C stops. Do not paste private text into bug reports or chats.', flush=True)
         deadline = time.monotonic()+args.seconds
         while time.monotonic() < deadline:
             time.sleep(3)

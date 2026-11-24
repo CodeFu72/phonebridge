@@ -49,3 +49,13 @@ class BluetoothWorkerTests(unittest.TestCase):
         worker.send({'id': 'test', 'address': 'Wrong Name', 'text': 'Example'})
         worker.access.PushMessage.assert_not_called()
         self.assertIn('did not start', worker.emit.call_args.args[1]['detail'])
+
+    def test_send_that_never_started_is_not_sent_and_keeps_nothing_locked(self):
+        # Neon review #7: nothing reached the phone, so it is "not sent", not "uncertain".
+        from model import SendGate
+        worker = self.worker(); worker.access = None
+        worker.send({'id': 'test', 'address': '+15551234567', 'text': 'Example'})
+        result = worker.emit.call_args.args[1]
+        self.assertEqual(result['state'], 'not_sent')
+        gate = SendGate(); gate.begin(); gate.finish(result['state'])
+        self.assertEqual(gate.state, 'idle')

@@ -131,7 +131,7 @@ def main():
                     raise ValueError('No downloaded file found.')
                 os.chmod(file, 0o600)
                 bounded_pump()
-                print('\nSafe summary (you can paste this into Codex):')
+                print('\nSafe summary (safe to share in a bug report):')
                 summary = inspect_attachment(file.read_bytes())
                 summary['transfer_receipt_confirmed'] = result is True
                 print(json.dumps(summary, indent=2))

@@ -45,8 +45,21 @@ class Backdrop(Gtk.Widget):
         self.phase = 0.0
         self._texture = None
         self._key = None
-        self._timer = GLib.timeout_add(1000 // self.FPS, self._tick)
+        # The timer runs only while the sky is actually animating (synthwave look, Animated
+        # sky on, window visible and focused); otherwise nothing wakes the CPU (fan-friendly).
+        self._timer = 0
+        for signal in ('notify::is-active', 'notify::visible'):
+            window.connect(signal, lambda *_: self.sync())
         self.connect('unrealize', lambda *_: self.stop())
+
+    def sync(self):
+        """Start or stop the animation timer to match the current look and focus."""
+        if self._animating():
+            if not self._timer:
+                self._timer = GLib.timeout_add(1000 // self.FPS, self._tick)
+        else:
+            self.stop()
+        self.queue_draw()
 
     def stop(self):
         if self._timer:
@@ -63,9 +76,11 @@ class Backdrop(Gtk.Widget):
         return self.window.get_visible() and self.window.is_active()
 
     def _tick(self):
-        if self._animating():
-            self.phase = (self.phase + 1 / (self.FPS * self.CYCLE)) % 1.0
-            self.queue_draw()
+        if not self._animating():
+            self._timer = 0
+            return False
+        self.phase = (self.phase + 1 / (self.FPS * self.CYCLE)) % 1.0
+        self.queue_draw()
         return True
 
     @staticmethod

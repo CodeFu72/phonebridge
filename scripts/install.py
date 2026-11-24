@@ -15,8 +15,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--omarchy-group', help='Existing Omarchy menu group to add PhoneBridge to')
     args = parser.parse_args()
-    import dbus  # noqa: F401
-    import gi
+    try:
+        import dbus  # noqa: F401
+        import cairo  # noqa: F401  (the synthwave look draws with it; missing it crashed first launch)
+        import gi
+    except ImportError as error:
+        raise SystemExit(f'Missing a required package ({error.name}). On Omarchy run: '
+                         'omarchy pkg add bluez bluez-utils bluez-obex python-dbus python-gobject python-cairo gtk4')
     gi.require_version('Gtk', '4.0')
     home = Path.home()
     data = Path(os.environ.get('XDG_DATA_HOME', str(home/'.local/share')))

@@ -371,7 +371,7 @@ class Window(Gtk.ApplicationWindow):
             self.phones = value
             self.phone_choice.set_model(Gtk.StringList.new([p['name'] for p in value] or ['No paired messaging phone found']))
             self.refresh_button.set_sensitive(True)
-            self.status.set_text('Choose your iPhone and connect.' if value else 'Pair your iPhone first, then Refresh. Use iPhone access if the message-permission switch is missing.')
+            self.status.set_text('Choose your iPhone and connect.' if value else 'Pair your iPhone first, then Refresh. Use Pair / setup… in Settings if the message-permission switch is missing.')
         elif event == 'connecting':
             self.connected = False
             self.status.set_text('Connecting to '+value+'…')
@@ -567,7 +567,7 @@ class Window(Gtk.ApplicationWindow):
                 self.render_links(row['links'], message.text)
             meta_text = readable_time(message.when)
             if message.status:
-                meta_text += ' · '+{'pending': 'Sending…', 'accepted': 'Accepted by iPhone', 'uncertain': 'Check iPhone · outcome uncertain'}.get(message.status, message.status)
+                meta_text += ' · '+{'pending': 'Sending…', 'accepted': 'Accepted by iPhone', 'uncertain': 'Check iPhone · outcome uncertain', 'not_sent': 'Not sent'}.get(message.status, message.status)
             elif message.body_state != 'full':
                 meta_text += ' · '+{'preview': 'Text preview', 'loading': 'Loading full text…', 'unavailable': 'Preview only · full text unavailable'}.get(message.body_state, '')
             if row['meta'].get_text() != meta_text:
@@ -863,7 +863,7 @@ class Window(Gtk.ApplicationWindow):
             return
         enabled, sound = self.notifications.get_active(), self.sound.get_active()
         if DEMO:
-            self.preference_items = {'notifications_enabled': enabled, 'sound_enabled': sound}
+            self.preference_items = {**self.preference_items, 'notifications_enabled': enabled, 'sound_enabled': sound}
         elif self.preferences:
             try:
                 self.preferences.set(enabled, sound)
@@ -1030,7 +1030,7 @@ class Window(Gtk.ApplicationWindow):
             self.remove_css_class('glass')
         if getattr(self, 'sky_switch', None) is not None:
             self.sky_switch.set_sensitive(not glass)
-        self.backdrop.queue_draw()
+        self.backdrop.sync()
 
     def glass_setting_changed(self, *_):
         glass = self.glass_switch.get_active()
@@ -1054,7 +1054,7 @@ class Window(Gtk.ApplicationWindow):
                 self.preference_items = {**self.preference_items, 'animated_sky': animated}
         except OSError:
             self.status.set_text('The sky setting could not be saved.')
-        self.backdrop.queue_draw()
+        self.backdrop.sync()
 
     def hide_to_bar(self):
         app = self.get_application()

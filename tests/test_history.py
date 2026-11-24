@@ -76,3 +76,8 @@ class ScrollTests(unittest.TestCase):
         Window.event(window,'messages',{'initial':False,'items':[]})
         window.render_thread.assert_not_called()
         window.render_sidebar.assert_not_called()
+
+    def test_unknown_charset_falls_back_instead_of_stopping_the_worker(self):
+        # Neon review #12: an unknown charset label raised LookupError and killed the worker.
+        text = 'Content-Type: text/plain; charset=x-made-up\r\n\r\nHello there'
+        self.assertEqual(parse_bmessage(envelope(text)), 'Hello there')

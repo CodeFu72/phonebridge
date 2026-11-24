@@ -32,7 +32,7 @@ On that iPhone, **Show Message Notifications** didn't appear in the Bluetooth se
 Requires Linux, a suitable Bluetooth adapter, BlueZ and its OBEX service, Python, dbus-python, PyGObject, and GTK 4. On Omarchy/Arch:
 
 ```sh
-omarchy pkg add bluez bluez-utils bluez-obex python-dbus python-gobject gtk4
+omarchy pkg add bluez bluez-utils bluez-obex python-dbus python-gobject python-cairo gtk4
 python scripts/install.py
 ```
 

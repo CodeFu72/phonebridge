@@ -124,7 +124,7 @@ class Bridge:
                     raise ValueError('No complete downloaded message.')
             self.loaded_bodies.add(key)
             self.emit('body', {'key': key, 'state': 'full', 'text': text})
-        except (dbus.DBusException, OSError, ValueError):
+        except (dbus.DBusException, OSError, ValueError, LookupError, KeyError):
             # Keep the visible preview and mark the failed load explicitly.
             self.emit('body', {'key': key, 'state': 'unavailable', 'text': None})
 
@@ -148,8 +148,13 @@ class Bridge:
             self.emit('sent', {'id': request['id'], 'state': state,
                 'detail': 'Accepted by iPhone; delivery not confirmed.' if state == 'accepted' else 'Receipt not confirmed. Check Messages on iPhone before sending again.'})
         except (dbus.DBusException, OSError, ValueError):
-            self.emit('sent', {'id': request['id'], 'state': 'uncertain',
-                'detail': 'Outcome uncertain. Check Messages on iPhone before sending again.' if attempted else 'Submission did not start. Check the connection and recipient.'})
+            if attempted:
+                self.emit('sent', {'id': request['id'], 'state': 'uncertain',
+                    'detail': 'Outcome uncertain. Check Messages on iPhone before sending again.'})
+            else:
+                # Nothing reached the phone: keep the draft and let the user try again.
+                self.emit('sent', {'id': request['id'], 'state': 'not_sent',
+                    'detail': 'Not sent: submission did not start, so the text never left this computer. Check the connection and recipient, then try again.'})
 
     def run(self):
         next_poll = time.monotonic()+4

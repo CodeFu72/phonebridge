@@ -9,6 +9,14 @@ def near_bottom(value, upper, page_size, tolerance=40):
     return max(0, upper-page_size)-value <= tolerance
 
 
+def _content(part):
+    """Decoded text; an unknown or broken charset label falls back to UTF-8 with replacements."""
+    try:
+        return part.get_content()
+    except (LookupError, KeyError):
+        return (part.get_payload(decode=True) or b'').decode('utf-8', errors='replace')
+
+
 def parse_bmessage(data):
     if len(data) > MAX_MESSAGE_BYTES:
         raise ValueError('Message exceeds the text-download limit.')
@@ -28,9 +36,9 @@ def parse_bmessage(data):
             part = message.get_body(preferencelist=('plain',))
             if part is None:
                 raise ValueError('No plain text in this message; view it on iPhone.')
-            text = part.get_content()
+            text = _content(part)
         elif message.get_content_type() == 'text/plain':
-            text = message.get_content()
+            text = _content(message)
         else:
             raise ValueError('This message is not plain text; view it on iPhone.')
         return str(text).replace('\r\n', '\n')

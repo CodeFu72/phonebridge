@@ -4,7 +4,7 @@ import hashlib
 from pathlib import Path
 import tarfile
 ROOT = Path(__file__).resolve().parent.parent
-VERSION = '0.1.0-alpha.1'
+VERSION = '0.1.0-alpha.2'
 NAMES = ['.gitignore', 'LICENSE', 'README.md', 'HOW-TO.md', 'CHANGELOG.md', 'app.py', 'bridge.py', 'model.py',
          'phonebridge.py', 'send_test.py', 'receive_test.py', 'request_access.py', 'connect_phone.py', 'alerts.py', 'history.py', 'tray.py', 'presentation.py', 'attachment_test.py']
 DIRECTORIES = {'assets': {'.css', '.svg', '.wav'}, 'docs': {'.md'}, 'scripts': {'.py', '.sh'}, 'tests': {'.py'}}

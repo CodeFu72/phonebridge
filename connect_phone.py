@@ -168,10 +168,12 @@ def main():
             raise ValueError('Missing bluez-obex. On Omarchy run: omarchy pkg add bluez-obex')
         bus = dbus.SystemBus()
         objects = dbus.Interface(bus.get_object('org.bluez', '/'), 'org.freedesktop.DBus.ObjectManager').GetManagedObjects(timeout=10)
-        phones = [(path, p) for path, p in devices_from(objects)
-                  if MAP in {str(u).lower() for u in p.get('UUIDs', [])}]
+        # Every paired device: a new iPhone may not advertise messaging (MAP) until its
+        # permission switch is on, which is exactly what this setup helps with.
+        phones = list(devices_from(objects))
+        ready = lambda p: MAP in {str(u).lower() for u in p.get('UUIDs', [])}
         print('\nChoose an already paired phone, or pair a new one:')
-        options = [str(p.get('Alias', 'Paired messaging phone')) for _, p in phones]+['Pair a new iPhone']
+        options = [str(p.get('Alias', 'Paired device'))+(' (messaging ready)' if ready(p) else '') for _, p in phones]+['Pair a new iPhone']
         index = choose(options, 'Type the LIST NUMBER (0 cancels): ')
         if index is None:
             return 0

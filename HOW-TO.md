@@ -9,7 +9,7 @@ You do **not** need to leave a Mac running, enter an Apple password, jailbreak y
 From the extracted PhoneBridge source folder, open a terminal. On Omarchy:
 
 ```sh
-omarchy pkg add bluez bluez-utils bluez-obex python-dbus python-gobject gtk4
+omarchy pkg add bluez bluez-utils bluez-obex python-dbus python-gobject python-cairo gtk4
 python scripts/install.py
 ```
 

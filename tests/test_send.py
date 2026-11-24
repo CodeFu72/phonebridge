@@ -57,3 +57,13 @@ class SendTests(unittest.TestCase):
         self.assertTrue(wait_transfer(bus, '/transfer', {'Status': 'complete'}))
         self.assertFalse(wait_transfer(bus, '/transfer', {'Status': 'error'}))
         bus.get_object.assert_not_called()
+
+    def test_polled_completion_is_not_undone_by_an_older_signal(self):
+        # Neon review #1: an earlier 'active' signal must not overwrite a polled 'complete'.
+        from unittest.mock import patch
+        tracker = TransferEvents('/session')
+        tracker.changed('org.bluez.obex.Transfer1', {'Status': 'active'}, [], path='/session/t1')
+        properties = Mock(); properties.Get.return_value = 'complete'
+        with patch('send_test.dbus.Interface', return_value=properties), patch('send_test.time.sleep'):
+            self.assertTrue(wait_transfer(Mock(), '/session/t1', {'Status': 'active'}, tracker))
+        properties.Get.assert_called_once()
