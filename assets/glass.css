@@ -1,0 +1,116 @@
+/* PhoneBridge glass: Vesper's calm, on frosted glass, in the colors of the running
+   Omarchy theme. The @t_* colors are written in front of this file by theme.py:
+   t_bg, t_raised, t_fg, t_accent, t_danger, t_warm, t_ok, t_shadow.
+   Hyprland blurs the desktop behind the see-through window (Omarchy's Glassy look). */
+
+window, window.background { background: alpha(@t_bg, 0.62); color: @t_fg;
+  font-family: "iA Writer Duo S", "iA Writer Duospace", "Noto Sans", sans-serif; font-size: 14px; }
+overlay > box, paned, paned > box { background: transparent; }
+
+/* ---------- header: Vesper's quiet dateline ---------- */
+headerbar { background: alpha(@t_bg, 0.30); border-bottom: 1px solid alpha(@t_fg, 0.08); box-shadow: none;
+  min-height: 58px; padding: 0 12px; }
+headerbar windowhandle, headerbar > windowhandle > box { background: transparent; }
+.glass-title { font-size: 16px; letter-spacing: 6px; color: @t_fg; }
+.glass-tag { font-size: 11px; letter-spacing: 2px; color: mix(@t_fg, @t_bg, 0.40); }
+.connection-pill { font-size: 12px; letter-spacing: 1px; color: @t_accent;
+  padding: 5px 12px; border-radius: 999px; border: 1px solid alpha(@t_accent, 0.35); background: alpha(@t_accent, 0.08); }
+
+/* ---------- panels ---------- */
+.sidebar { background: alpha(@t_fg, 0.035); border-right: 1px solid alpha(@t_fg, 0.07); }
+paned > separator { background: alpha(@t_fg, 0.07); min-width: 1px; }
+.section-title { font-size: 14px; letter-spacing: 4px; color: mix(@t_fg, @t_bg, 0.15); }
+.chat-title { font-size: 20px; letter-spacing: 1px; color: @t_fg; }
+.eyebrow { font-size: 11px; letter-spacing: 3px; color: @t_accent; }
+.muted { color: mix(@t_fg, @t_bg, 0.38); font-size: 12px; }
+.footnote { color: mix(@t_fg, @t_bg, 0.50); font-size: 10px; }
+.empty-title { font-size: 19px; letter-spacing: 1px; color: @t_fg; }
+.status { font-size: 12px; color: mix(@t_fg, @t_bg, 0.38); }
+.status.chat-status { background: transparent; border: none; font-size: 11px; }
+.pill { color: @t_warm; font-size: 11px; }
+.review-text { background: alpha(@t_fg, 0.05); border: 1px solid alpha(@t_fg, 0.12); padding: 16px; border-radius: 14px; font-size: 16px; }
+
+/* ---------- buttons: Vesper's ghost pills ---------- */
+button { font-family: inherit; font-size: 13px; letter-spacing: 1px; font-weight: normal;
+  color: mix(@t_fg, @t_bg, 0.25); background: transparent; border: 1px solid alpha(@t_fg, 0.10);
+  border-radius: 999px; padding: 6px 14px; box-shadow: none; text-shadow: none;
+  transition: background 200ms, color 200ms, border-color 200ms; }
+button:hover { color: @t_fg; background: alpha(@t_fg, 0.08); border-color: alpha(@t_fg, 0.18); }
+button:active { background: alpha(@t_fg, 0.13); }
+button:focus-visible { outline: 2px solid alpha(@t_accent, 0.7); outline-offset: 2px; }
+button:disabled { opacity: 0.4; }
+button.suggested-action { color: @t_fg; border: 1px solid alpha(@t_accent, 0.45);
+  background: linear-gradient(180deg, alpha(@t_accent, 0.32), alpha(@t_accent, 0.20)); letter-spacing: 2px; }
+button.suggested-action:hover { background: linear-gradient(180deg, alpha(@t_accent, 0.45), alpha(@t_accent, 0.30)); }
+button.suggested-action:disabled { background: alpha(@t_accent, 0.08); color: mix(@t_fg, @t_bg, 0.45); }
+menubutton > button { padding: 6px 11px; }
+menubutton > button image { color: @t_accent; -gtk-icon-shadow: none; }
+
+/* ---------- people ---------- */
+.people, .people row { background: transparent; }
+.people row { padding: 3px 0; }
+button.person { letter-spacing: 0; color: @t_fg; background: alpha(@t_fg, 0.03);
+  border: 1px solid alpha(@t_fg, 0.06); border-radius: 14px; padding: 10px 13px; }
+button.person:hover { background: alpha(@t_fg, 0.08); border-color: alpha(@t_fg, 0.14); }
+button.person.selected { background: alpha(@t_accent, 0.14); border-color: alpha(@t_accent, 0.45); box-shadow: inset 3px 0 @t_accent; }
+button.person.unread .person-name { color: @t_warm; }
+.person-name { font-size: 14px; font-weight: bold; }
+
+/* ---------- messages ---------- */
+.incoming { padding: 13px 16px; background: alpha(@t_raised, 0.55); border: 1px solid alpha(@t_fg, 0.08);
+  border-radius: 18px 18px 18px 5px; margin-right: 56px; box-shadow: 0 4px 14px @t_shadow; }
+.outgoing { padding: 13px 16px; background: alpha(@t_accent, 0.20); border: 1px solid alpha(@t_accent, 0.38);
+  border-radius: 18px 18px 5px 18px; margin-left: 56px; box-shadow: 0 4px 14px @t_shadow; }
+.message-text { font-size: 15px; color: @t_fg; }
+.message-text link, label link { color: @t_accent; text-decoration: underline; }
+.message-text link:hover, label link:hover { color: @t_fg; }
+.message-text selection, label selection { background: alpha(@t_accent, 0.35); color: @t_fg; }
+.message-meta { font-size: 11px; color: mix(@t_fg, @t_bg, 0.45); letter-spacing: 1px; }
+.incoming button, .outgoing button { font-size: 11px; padding: 4px 11px; }
+
+/* ---------- links ---------- */
+.link-chip { background: alpha(@t_fg, 0.05); border: 1px solid alpha(@t_fg, 0.10); border-radius: 12px; padding: 6px 6px 6px 12px; }
+.link-host { font-size: 12px; color: @t_accent; }
+.link-note { font-size: 10px; color: mix(@t_fg, @t_bg, 0.45); }
+button.chip-button { font-size: 10px; padding: 4px 10px; }
+.link-card { background: alpha(@t_bg, 0.70); border: 1px solid alpha(@t_fg, 0.12); border-radius: 14px; box-shadow: 0 4px 16px @t_shadow; }
+.link-image { border-radius: 13px 13px 0 0; }
+.link-site { font-size: 10px; letter-spacing: 2px; color: @t_accent; }
+.link-title { font-weight: bold; font-size: 14px; color: @t_fg; }
+.link-description { font-size: 12px; color: mix(@t_fg, @t_bg, 0.35); }
+.play-badge { font-size: 26px; color: @t_bg; background: alpha(@t_accent, 0.9); border-radius: 999px; padding: 10px 14px 10px 18px; }
+button.link-open { color: @t_fg; border: 1px solid alpha(@t_accent, 0.45); background: alpha(@t_accent, 0.25); }
+
+/* ---------- inputs ---------- */
+entry, dropdown > button, searchentry { background: alpha(@t_bg, 0.40); color: @t_fg; border: 1px solid alpha(@t_fg, 0.12);
+  border-radius: 999px; padding: 7px 14px; box-shadow: none; font-family: inherit; letter-spacing: 0; }
+entry:focus-within, searchentry:focus-within { border-color: alpha(@t_accent, 0.55); box-shadow: 0 0 0 3px alpha(@t_accent, 0.12); }
+entry placeholder, searchentry placeholder { color: mix(@t_fg, @t_bg, 0.50); }
+.composer { background: alpha(@t_bg, 0.45); border: 1px solid alpha(@t_fg, 0.12); border-radius: 18px; }
+.composer:focus-within { border-color: alpha(@t_accent, 0.55); box-shadow: 0 0 0 3px alpha(@t_accent, 0.12); }
+.composer-view, .composer-view text { background: transparent; color: @t_fg; font-size: 15px; caret-color: @t_warm; }
+.composer-view text selection { background: alpha(@t_accent, 0.35); color: @t_fg; }
+.composer-placeholder { color: mix(@t_fg, @t_bg, 0.50); font-size: 15px; }
+
+checkbutton { color: mix(@t_fg, @t_bg, 0.30); font-size: 12px; }
+checkbutton check { border: 1px solid alpha(@t_fg, 0.30); background: transparent; border-radius: 5px; }
+checkbutton check:checked { background: @t_accent; color: @t_bg; }
+switch { border-radius: 18px; background: alpha(@t_fg, 0.14); border: 1px solid alpha(@t_fg, 0.16); }
+switch:checked { background: alpha(@t_accent, 0.75); border-color: transparent; }
+switch slider { background: @t_fg; border-radius: 16px; min-width: 18px; min-height: 18px; }
+
+scrollbar slider { background: alpha(@t_fg, 0.20); border-radius: 999px; min-width: 6px; }
+scrollbar slider:hover { background: alpha(@t_fg, 0.35); }
+scrollbar, scrolledwindow, viewport { background: transparent; }
+
+popover contents, popover > arrow { background: alpha(@t_bg, 0.94); color: @t_fg; border: 1px solid alpha(@t_fg, 0.12);
+  border-radius: 16px; box-shadow: 0 8px 28px @t_shadow; }
+popover.menu contents { padding: 6px; }
+popover modelbutton { border-radius: 8px; padding: 6px 10px; }
+popover modelbutton:hover { background: alpha(@t_accent, 0.14); }
+tooltip, tooltip.background { background: alpha(@t_bg, 0.94); color: @t_fg; border: 1px solid alpha(@t_fg, 0.12); border-radius: 8px; }
+spinner { color: @t_accent; }
+windowcontrols button { min-width: 26px; min-height: 26px; padding: 4px; margin: 0; }
+windowcontrols { margin: 0 2px; }
+headerbar windowcontrols, headerbar windowcontrols > button { -gtk-icon-size: 14px; }
+headerbar windowcontrols button { margin-top: 14px; margin-bottom: 14px; padding: 2px; min-height: 30px; min-width: 30px; }
